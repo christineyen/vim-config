@@ -45,8 +45,8 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 "}}}
 
 map <F3> <ESC>:set paste!<RETURN>
-map <C-L> <ESC>:FufCoverageFile!<RETURN>
-map <C-P> <ESC>:FufRenewCache<RETURN>
+map <C-L> <ESC>:CommandT<RETURN>
+map <C-P> <ESC>:CommandTFlush<RETURN>
 
 let mapleader = ','
 
