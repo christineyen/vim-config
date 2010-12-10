@@ -11,6 +11,7 @@ set hlsearch
 set expandtab " turn tabs to spaces
 set sw=2 " sw = shiftwidth
 set ts=2 " set tabstop to 4 characters
+set autoindent
 filetype plugin on
 " Backspace can kill pretty much everything
 set backspace=indent,eol,start
@@ -45,6 +46,8 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 
 map <F3> <ESC>:set paste!<RETURN>
 map <C-L> <ESC>:FufCoverageFile!<RETURN>
-map <C-R> <ESC>:FufRenewCache<RETURN>
+map <C-P> <ESC>:FufRenewCache<RETURN>
 
 let mapleader = ','
+
+colorscheme vividchalk
