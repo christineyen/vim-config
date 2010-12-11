@@ -1,41 +1,78 @@
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+" ------------------------------------------------------------------------
+" System setup
+" ------------------------------------------------------------------------
+
 set nocompatible
-set ruler
 syntax on
-"all relate to search
-set incsearch ignorecase smartcase
-" Highlight search matches
-set hlsearch
-set expandtab " turn tabs to spaces
-set sw=2 " sw = shiftwidth
-set ts=2 " set tabstop to 4 characters
-set autoindent
 filetype plugin on
-" Backspace can kill pretty much everything
-set backspace=indent,eol,start
-set background=dark
-"set number
-"hi LineNr ctermfg=DarkBlue
-"set vb
-set wildmenu
-set title
-" link here: http://github.com/msanders/vim-files/blob/master/.vimrc
-:ab #b /****************************************
-:ab #e ^V^H*****************************************/
+set nobackup      " turn backup off - most files are in git anyway
+set nowritebackup " turn off writebackup
+set noswapfile    " turn off creating .swpfiles everywhere
 
-" turn backoff off, most files are in svn or git anyway
-set nobackup
-set nowb
-set noswapfile
+" ------------------------------------------------------------------------
+" Text Formatting
+" ------------------------------------------------------------------------
 
-set showmatch "show matching brackets
-set mat=5
-" set path=~/tmz/aardvark/** "ensuring that all files in the aardvark project are looked for in path
+set autoindent    " automatic indent new lines
+set smartindent   " be smart about it
+set tabstop=2     " set tabstop to 2 characters
+set shiftwidth=2  " sw = shiftwidth
+set expandtab     " turn tabs to spaces
+set nosmarttab    " who knows
+set textwidth=80  " wrap at 80 chars by default
 
-" au BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+" ------------------------------------------------------------------------
+" UI
+" ------------------------------------------------------------------------
 
+colorscheme vividchalk
+set background=dark            " not as relevant with colorscheme defined
+set ruler                      " show the cursor position all the time
+set wildmenu                   " turn on wild menu
+set backspace=indent,eol,start " backspace kills pretty much everything
+set whichwrap+=h,l             " cursor keys wrap too!
+set shortmess=filtIoOA         " hide the vim startup message
+set nostartofline              " don't jump to start of line when scrolling
+set title                      " expose currently editing file in title bar
+
+" ------------------------------------------------------------------------
+" Search
+" ------------------------------------------------------------------------
+
+set incsearch     " do incremental searches
+set ignorecase    " case-insensitive search
+set smartcase     " override ignorecase if the search pattern has UPPERCASE
+
+" ------------------------------------------------------------------------
+" Visual Cues
+" ------------------------------------------------------------------------
+
+set showmatch     "show matching brackets
+set mat=5         " duration to show matching brace (1/10 sec)
+set hlsearch      " highlight search matches
+
+" ---------------------------------------------------------------------------
+"  Strip all trailing whitespace in file
+" ---------------------------------------------------------------------------
+
+function! StripWhitespace ()
+    exec ':%s/ \+$//gc'
+endfunction
+map ,s :call StripWhitespace ()<CR>
+
+" ------------------------------------------------------------------------
+" Remapping (and plugin aliases)
+" ------------------------------------------------------------------------
+
+" lead with ,
+let mapleader = ','
+
+map <F3> <ESC>:set paste!<RETURN>
+
+" NERDTree options
 map <F2> <ESC>:NERDTreeToggle<RETURN>
 map <F7> <ESC>:NERDTreeFind<RETURN>
 "NERDTree options {{{
@@ -44,10 +81,6 @@ let NERDTreeSplitVertical   = 1                      "and open as vsplit
 let NERDTreeChDirMode       = 2                      "change working dir when I change root
 "}}}
 
-map <F3> <ESC>:set paste!<RETURN>
 map <C-L> <ESC>:CommandT<RETURN>
 map <C-P> <ESC>:CommandTFlush<RETURN>
 
-let mapleader = ','
-
-colorscheme vividchalk
