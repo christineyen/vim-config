@@ -17,7 +17,7 @@ set noswapfile    " turn off creating .swpfiles everywhere
 " ------------------------------------------------------------------------
 
 set autoindent    " automatic indent new lines
-set smartindent   " be smart about it
+"set smartindent   " be smart about it. disabled-bad interaction w endwise
 set tabstop=2     " set tabstop to 2 characters
 set shiftwidth=2  " sw = shiftwidth
 set expandtab     " turn tabs to spaces
@@ -28,7 +28,6 @@ set textwidth=80  " wrap at 80 chars by default
 " UI
 " ------------------------------------------------------------------------
 
-colorscheme vividchalk
 set background=dark            " not as relevant with colorscheme defined
 set ruler                      " show the cursor position all the time
 set wildmenu                   " turn on wild menu
@@ -82,5 +81,11 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 "}}}
 
 map <C-L> <ESC>:CommandT<RETURN>
-map <C-P> <ESC>:CommandTFlush<RETURN>
+map <C-P><C-P> <ESC>:CommandTFlush<RETURN>
 
+
+" ---------------------------------------------------------------------------
+"  Useful tricks to remember for later
+" ---------------------------------------------------------------------------
+
+" autocmd FileType ruby set number    " set filetype-specific commands
