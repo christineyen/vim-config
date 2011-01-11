@@ -18,7 +18,7 @@ if version > 580
         syntax reset
     endif
 endif
-let g:colors_name="my_molokai"
+let g:colors_name="mmolokai"
 
 if exists("g:molokai_original")
     let s:molokai_original = g:molokai_original
@@ -119,7 +119,7 @@ else
    hi CursorLine                    guibg=#293739
    hi CursorColumn                  guibg=#293739
    hi LineNr          guifg=#BCBCBC guibg=#232526
-   hi NonText         guifg=#BCBCBC guibg=#232526
+   hi NonText         guifg=#BCBCBC guibg=#1B1D1E
 end
 
 "

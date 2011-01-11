@@ -6,11 +6,18 @@ call pathogen#helptags()
 " ------------------------------------------------------------------------
 
 set nocompatible
-syntax on
 filetype plugin on
 set nobackup      " turn backup off - most files are in git anyway
 set nowritebackup " turn off writebackup
 set noswapfile    " turn off creating .swpfiles everywhere
+set vb            " no more dinging
+
+" ------------------------------------------------------------------------
+" Color / Syntax settings
+" ------------------------------------------------------------------------
+
+syntax on
+au BufRead,BufNewFile *.less setfiletype css  " syntax .less = .css
 
 " ------------------------------------------------------------------------
 " Text Formatting
@@ -74,15 +81,19 @@ map <F3> <ESC>:set paste!<RETURN>
 " NERDTree options
 map <F2> <ESC>:NERDTreeToggle<RETURN>
 map <F7> <ESC>:NERDTreeFind<RETURN>
-"NERDTree options {{{
 let NERDTreeIgnore          = ['\.pyc$','\.swp$']    "ignore compiled python files
 let NERDTreeSplitVertical   = 1                      "and open as vsplit
 let NERDTreeChDirMode       = 2                      "change working dir when I change root
-"}}}
 
+" Command-T options
 map <C-L> <ESC>:CommandT<RETURN>
 map <C-P><C-P> <ESC>:CommandTFlush<RETURN>
 
+" Surround remappings
+nmap s ysi
+nmap S ysa
+nmap s$ ys$
+nmap sv gvs
 
 " ---------------------------------------------------------------------------
 "  Useful tricks to remember for later
