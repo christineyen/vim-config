@@ -17,7 +17,8 @@ set vb            " no more dinging
 " ------------------------------------------------------------------------
 
 syntax on
-au BufRead,BufNewFile *.less setfiletype css  " syntax .less = .css
+au BufRead,BufNewFile *.less setfiletype less  " syntax .less = .css
+colorscheme vividchalk
 
 " ------------------------------------------------------------------------
 " Text Formatting
@@ -60,15 +61,6 @@ set showmatch     "show matching brackets
 set mat=5         " duration to show matching brace (1/10 sec)
 set hlsearch      " highlight search matches
 
-" ---------------------------------------------------------------------------
-"  Strip all trailing whitespace in file
-" ---------------------------------------------------------------------------
-
-function! StripWhitespace ()
-    exec ':%s/ \+$//gc'
-endfunction
-map ,s :call StripWhitespace ()<CR>
-
 " ------------------------------------------------------------------------
 " Remapping (and plugin aliases)
 " ------------------------------------------------------------------------
@@ -88,12 +80,26 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 " Command-T options
 map <C-L> <ESC>:CommandT<RETURN>
 map <C-P><C-P> <ESC>:CommandTFlush<RETURN>
+" ignore rails plugins for command-t, and generated asset packaging
+set wildignore=vendor/plugins/*,public/assets/*,solr/data/*,tmp/*
 
 " Surround remappings
 nmap s ysi
 nmap S ysa
 nmap s$ ys$
 nmap sv gvs
+
+" Scratch remapping
+map <leader>s <ESC>:Sscratch<RETURN>
+
+" ---------------------------------------------------------------------------
+"  Strip all trailing whitespace in file
+" ---------------------------------------------------------------------------
+
+function! StripWhitespace ()
+    exec ':%s/ \+$//gc'
+endfunction
+map <leader>w :call StripWhitespace ()<CR>
 
 " ---------------------------------------------------------------------------
 "  Useful tricks to remember for later
