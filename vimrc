@@ -102,7 +102,21 @@ endfunction
 map <leader>w :call StripWhitespace ()<CR>
 
 " ---------------------------------------------------------------------------
+"  Make it easy to pull out a rough 'outline' of function declarations by
+"  filetype
+" ---------------------------------------------------------------------------
+
+function! OpenOutlineView ()
+  silent lvimgrep 'def ' %
+  lopen
+  set nomodified
+endfunction
+map <leader>o :call OpenOutlineView ()<CR>
+
+
+" ---------------------------------------------------------------------------
 "  Useful tricks to remember for later
 " ---------------------------------------------------------------------------
 
 " autocmd FileType ruby set number    " set filetype-specific commands
+autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
