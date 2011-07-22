@@ -113,6 +113,12 @@ function! OpenOutlineView ()
 endfunction
 map <leader>o :call OpenOutlineView ()<CR>
 
+function! InsertDebugger()
+    " ~/vim/cpp/new-class.txt is the path to the template file
+		call append('.', "require 'rubydebug'; debugger")
+endfunction
+map <leader>d :call InsertDebugger()<CR>
+
 
 " ---------------------------------------------------------------------------
 "  Useful tricks to remember for later
@@ -120,3 +126,4 @@ map <leader>o :call OpenOutlineView ()<CR>
 
 " autocmd FileType ruby set number    " set filetype-specific commands
 autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
+
