@@ -31,6 +31,3 @@
 [submodule "bundle/command-t"]
 	path = bundle/command-t
 	url = git://git.wincent.com/command-t.git
-[submodule "vim-slim"]
-	path = vim-slim
-	url = git://github.com/bbommarito/vim-slim.git
