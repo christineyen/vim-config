@@ -32,6 +32,8 @@ set expandtab     " turn tabs to spaces
 set nosmarttab    " who knows
 set textwidth=80  " wrap at 80 chars by default
 
+autocmd Filetype objc setlocal tabstop=4 noexpandtab shiftwidth=4
+
 " ------------------------------------------------------------------------
 " UI
 " ------------------------------------------------------------------------
