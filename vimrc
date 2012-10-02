@@ -77,6 +77,8 @@ let NERDTreeIgnore          = ['\.pyc$','\.swp$']    "ignore compiled python fil
 let NERDTreeSplitVertical   = 1                      "and open as vsplit
 let NERDTreeChDirMode       = 2                      "change working dir when I change root
 
+" CtrlP Options
+let g:ctrlp_cmd = 'CtrlP .'
 " ignore rails plugins for command-t, and generated asset packaging
 set wildignore=vendor/plugins/*,public/assets/*,solr/data/*,tmp/*
 
