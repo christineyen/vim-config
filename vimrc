@@ -1,5 +1,4 @@
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+call pathogen#infect()
 
 " ------------------------------------------------------------------------
 " System setup
@@ -18,6 +17,7 @@ set vb            " no more dinging
 
 syntax on
 au BufRead,BufNewFile *.less setfiletype less  " syntax .less = .css
+au BufRead,BufNewFile *.jst setfiletype html
 colorscheme vividchalk
 
 " ------------------------------------------------------------------------
