@@ -64,6 +64,19 @@ set mat=5         " duration to show matching brace (1/10 sec)
 set hlsearch      " highlight search matches
 
 " ------------------------------------------------------------------------
+" Better splits manipulation (via http://robots.thoughtbot.com/post/48275867281/vim-splits-move-faster-and-more-naturally)
+" ------------------------------------------------------------------------
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Move cursor to the new split panes opened to the bottom + right
+set splitbelow
+set splitright
+
+" ------------------------------------------------------------------------
 " Remapping (and plugin aliases)
 " ------------------------------------------------------------------------
 
@@ -89,9 +102,6 @@ nmap s ysi
 nmap S ysa
 nmap s$ ys$
 nmap sv gvs
-
-" Scratch remapping
-map <leader>s <ESC>:Sscratch<RETURN>
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
