@@ -11,6 +11,12 @@ set nowritebackup " turn off writebackup
 set noswapfile    " turn off creating .swpfiles everywhere
 set vb            " no more dinging
 
+" Should only be applied on shiny
+let hostname = substitute(system('hostname'), '\n', '', '')
+if hostname == 'shiny.local' && (match(expand("%:p:h"), "/Users/cyen$") >= 0)
+  cd /Users/cyen/hungry/parse/
+endif
+
 " ------------------------------------------------------------------------
 " Color / Syntax settings
 " ------------------------------------------------------------------------
@@ -94,6 +100,7 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 
 " CtrlP Options
 let g:ctrlp_cmd = 'CtrlP .'
+let g:ctrpl_custom_ignore = 'node_modules'
 " ignore rails plugins for command-t, and generated asset packaging
 set wildignore=vendor/plugins/*,public/assets/*,solr/data/*,tmp/*
 
