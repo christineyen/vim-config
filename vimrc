@@ -36,8 +36,8 @@ set tabstop=2     " set tabstop to 2 characters
 set shiftwidth=2  " sw = shiftwidth
 set expandtab     " turn tabs to spaces
 set nosmarttab    " who knows
-set textwidth=80  " wrap at 80 chars by default
 
+autocmd Filetype ruby setlocal textwidth=80  " wrap at 80 chars for ruby
 autocmd Filetype objc setlocal tabstop=4 noexpandtab shiftwidth=4
 
 " ------------------------------------------------------------------------
@@ -109,6 +109,12 @@ nmap s ysi
 nmap S ysa
 nmap s$ ys$
 nmap sv gvs
+
+" YouCompleteMe - stop opening preview scratch
+set completeopt=menu,menuone
+let g:ycm_min_num_of_chars_for_completion = 4
+
+let g:ctrlp_custom_ignore = 'node_modules\|\.sketch'
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
