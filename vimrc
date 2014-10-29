@@ -1,3 +1,7 @@
+let g:pathogen_disabled = []
+if v:version < '704'
+  call add(g:pathogen_disabled, 'YouCompleteMe')
+endif
 call pathogen#infect()
 
 " ------------------------------------------------------------------------
