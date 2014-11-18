@@ -104,9 +104,15 @@ let NERDTreeChDirMode       = 2                      "change working dir when I 
 
 " CtrlP Options
 let g:ctrlp_cmd = 'CtrlP .'
-let g:ctrpl_custom_ignore = 'node_modules'
+if exists('g:ctrlp_custom_ignore')
+  unlet g:ctrlp_custom_ignore
+endif
+let g:ctrlp_custom_ignore = {
+ \ 'dir': '\v[\/](vendor|node_modules|public/docs|public/assets|public/downloads|codegen).*$',
+ \ 'file': '\v\.(png|jpg|gif|zip|gz|xar)$'
+ \ }
 " ignore rails plugins for command-t, and generated asset packaging
-set wildignore=vendor/plugins/*,public/assets/*,solr/data/*,tmp/*
+set wildignore+=vendor\\**,public/assets/*,solr/data/*,tmp/*
 
 " Surround remappings
 nmap s ysi
@@ -117,8 +123,6 @@ nmap sv gvs
 " YouCompleteMe - stop opening preview scratch
 set completeopt=menu,menuone
 let g:ycm_min_num_of_chars_for_completion = 4
-
-let g:ctrlp_custom_ignore = 'node_modules\|\.sketch'
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
