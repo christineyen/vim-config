@@ -108,7 +108,7 @@ if exists('g:ctrlp_custom_ignore')
   unlet g:ctrlp_custom_ignore
 endif
 let g:ctrlp_custom_ignore = {
- \ 'dir': '\v[\/](vendor|node_modules|public/docs|public/assets|public/downloads|codegen).*$',
+ \ 'dir': '\v[\/](vendor|node_modules|public/(docs|assets|downloads|stylesheets/compiled|fonts)|tmp/|log/|doc/).*$',
  \ 'file': '\v\.(png|jpg|gif|zip|gz|xar)$'
  \ }
 " ignore rails plugins for command-t, and generated asset packaging
