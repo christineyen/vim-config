@@ -43,7 +43,7 @@ set nosmarttab    " who knows
 
 autocmd Filetype ruby setlocal textwidth=80  " wrap at 80 chars for ruby
 autocmd Filetype objc setlocal tabstop=4 noexpandtab shiftwidth=4
-autocmd Filetype javascript.jsx setlocal tabstop=4 noexpandtab shiftwidth=4
+autocmd Filetype javascript.jsx setlocal tabstop=4 shiftwidth=4
 
 " ------------------------------------------------------------------------
 " UI
