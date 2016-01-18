@@ -44,6 +44,9 @@ set nosmarttab    " who knows
 autocmd Filetype ruby setlocal textwidth=80  " wrap at 80 chars for ruby
 autocmd Filetype objc setlocal tabstop=4 noexpandtab shiftwidth=4
 autocmd Filetype javascript.jsx setlocal tabstop=4 shiftwidth=4
+autocmd Filetype css setlocal tabstop=4 shiftwidth=4
+autocmd Filetype scss setlocal tabstop=4 shiftwidth=4
+autocmd Filetype tmpl setlocal tabstop=4 shiftwidth=4
 
 " ------------------------------------------------------------------------
 " UI
@@ -125,6 +128,36 @@ nmap sv gvs
 set completeopt=menu,menuone
 let g:ycm_min_num_of_chars_for_completion = 4
 
+" Tagbar options
+nmap <F8> :TagbarToggle<CR>
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
+
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
 " ---------------------------------------------------------------------------
@@ -145,13 +178,6 @@ function! OpenOutlineView ()
   set nomodified
 endfunction
 map <leader>o :call OpenOutlineView ()<CR>
-
-function! InsertDebugger()
-    " ~/vim/cpp/new-class.txt is the path to the template file
-		call append('.', "require 'rubydebug'; debugger")
-endfunction
-map <leader>d :call InsertDebugger()<CR>
-
 
 " ---------------------------------------------------------------------------
 "  Useful tricks to remember for later
