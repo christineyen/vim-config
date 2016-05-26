@@ -21,6 +21,9 @@ if hostname == 'shiny.local' && (match(expand("%:p:h"), "/Users/cyen$") >= 0)
   cd /Users/cyen/hungry/parse/
 endif
 
+" allow the . to execute once for each line of a visual selection
+vnoremap . :normal .<CR>
+
 " ------------------------------------------------------------------------
 " Color / Syntax settings
 " ------------------------------------------------------------------------
@@ -94,6 +97,7 @@ set splitright
 " Remapping (and plugin aliases)
 " ------------------------------------------------------------------------
 
+inoremap kj <Esc>
 " lead with ,
 let mapleader = ','
 
