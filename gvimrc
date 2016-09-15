@@ -5,6 +5,8 @@ set guifont=Monaco:h10
 set transparency=5
 set number        " line numbers
 set noantialias
+set t_Co=256 " enable 256 colors in vim
+let g:rehash256 = 1
 
 highlight Cursor guifg=white guibg=#BAAF07
 highlight iCursor guifg=white guibg=#A2C257

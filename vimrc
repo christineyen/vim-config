@@ -94,7 +94,7 @@ set splitbelow
 set splitright
 
 " ------------------------------------------------------------------------
-" Remapping (and plugin aliases)
+" Remapping
 " ------------------------------------------------------------------------
 
 inoremap kj <Esc>
@@ -106,6 +106,11 @@ map <F3> <ESC>:set paste!<RETURN>
 " NERDTree options
 map <F2> <ESC>:NERDTreeToggle<RETURN>
 map <F7> <ESC>:NERDTreeFind<RETURN>
+
+" ------------------------------------------------------------------------
+" Plugin configuration
+" ------------------------------------------------------------------------
+
 let NERDTreeIgnore          = ['\.pyc$','\.swp$']    "ignore compiled python files
 let NERDTreeSplitVertical   = 1                      "and open as vsplit
 let NERDTreeChDirMode       = 2                      "change working dir when I change root
@@ -161,6 +166,10 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+
+" vim-markdown options
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_toml_frontmatter = 1
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
