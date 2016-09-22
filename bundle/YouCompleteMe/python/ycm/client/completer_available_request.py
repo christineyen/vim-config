@@ -23,32 +23,36 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import *  # noqa
 
-import time
-from threading import Thread
-from ycm.client.base_request import BaseRequest
+from requests.exceptions import ReadTimeout
+
+from ycm.client.base_request import ( BaseRequest, BuildRequestData,
+                                      HandleServerException )
+from ycmd.responses import ServerError
 
 
-# This class can be used to keep the ycmd server alive for the duration of the
-# life of the client. By default, ycmd shuts down if it doesn't see a request in
-# a while.
-class YcmdKeepalive( object ):
-  def __init__( self, ping_interval_seconds = 60 * 10 ):
-    self._keepalive_thread = Thread( target = self._ThreadMain )
-    self._keepalive_thread.daemon = True
-    self._ping_interval_seconds = ping_interval_seconds
+class CompleterAvailableRequest( BaseRequest ):
+  def __init__( self, filetypes ):
+    super( CompleterAvailableRequest, self ).__init__()
+    self.filetypes = filetypes
+    self._response = None
 
 
   def Start( self ):
-    self._keepalive_thread.start()
+    request_data = BuildRequestData()
+    request_data.update( { 'filetypes': self.filetypes } )
+    try:
+      self._response = self.PostDataToHandler( request_data,
+                                               'semantic_completion_available' )
+    except ( ServerError, ReadTimeout ) as e:
+      HandleServerException( e )
 
 
-  def _ThreadMain( self ):
-    while True:
-      time.sleep( self._ping_interval_seconds )
+  def Response( self ):
+    return self._response
 
-      # We don't care if there's an intermittent problem in contacting the
-      # server; it's fine to just skip this ping.
-      try:
-        BaseRequest.GetDataFromHandler( 'healthy' )
-      except:
-        pass
+
+def SendCompleterAvailableRequest( filetypes ):
+  request = CompleterAvailableRequest( filetypes )
+  # This is a blocking call.
+  request.Start()
+  return request.Response()
