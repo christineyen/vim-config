@@ -1,5 +1,5 @@
 let g:pathogen_disabled = []
-if v:version < '704'
+if v:version < '800'
   call add(g:pathogen_disabled, 'YouCompleteMe')
 endif
 call pathogen#infect()
@@ -31,7 +31,7 @@ vnoremap . :normal .<CR>
 syntax on
 au BufRead,BufNewFile *.less setfiletype less  " syntax .less = .css
 au BufRead,BufNewFile *.jst setfiletype html
-colorscheme vividchalk
+colorscheme Tomorrow-Night-Bright
 
 " ------------------------------------------------------------------------
 " Text Formatting
