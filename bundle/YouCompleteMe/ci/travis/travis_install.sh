@@ -2,6 +2,11 @@
 
 set -ev
 
+# RVM overrides the cd, popd, and pushd shell commands, causing the
+# "shell_session_update: command not found" error on macOS when executing those
+# commands.
+unset -f cd popd pushd
+
 ####################
 # OS-specific setup
 ####################
@@ -15,14 +20,15 @@ source ci/travis/travis_install.${TRAVIS_OS_NAME}.sh
 # pyenv setup
 #############
 
-export PYENV_ROOT="${HOME}/.pyenv"
+PYENV_ROOT="${HOME}/.pyenv"
 
 if [ ! -d "${PYENV_ROOT}/.git" ]; then
+  rm -rf ${PYENV_ROOT}
   git clone https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
 fi
 pushd ${PYENV_ROOT}
 git fetch --tags
-git checkout v20160202
+git checkout v1.0.8
 popd
 
 export PATH="${PYENV_ROOT}/bin:${PATH}"

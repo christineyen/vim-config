@@ -19,11 +19,10 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from future import standard_library
-standard_library.install_aliases()
+# Not installing aliases from python-future; it's unreliable and slow.
 from builtins import *  # noqa
 
-from ycm.test_utils import ExtendedMock, MockVimModule
+from ycm.tests.test_utils import ExtendedMock, MockVimModule
 MockVimModule()
 
 import json
@@ -267,10 +266,12 @@ class Response_Detection_test( object ):
       # GoToResponse_QuickFix_test, so here we just check that the right call is
       # made
       with patch( 'ycm.vimsupport.SetQuickFixList' ) as set_qf_list:
-        request = CommandRequest( [ command ] )
-        request._response = response
-        request.RunPostCommandActionsIfNeeded()
-        ok_( set_qf_list.called )
+        with patch( 'ycm.vimsupport.OpenQuickFixList' ) as open_qf_list:
+          request = CommandRequest( [ command ] )
+          request._response = response
+          request.RunPostCommandActionsIfNeeded()
+          ok_( set_qf_list.called )
+          ok_( open_qf_list.called )
 
     basic_goto = {
       'filepath': 'test',
