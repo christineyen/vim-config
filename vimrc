@@ -171,6 +171,9 @@ let g:tagbar_type_go = {
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_toml_frontmatter = 1
 
+" vim-go options
+let g:go_version_warning = 0
+
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file
 " ---------------------------------------------------------------------------
