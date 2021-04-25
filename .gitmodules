@@ -19,9 +19,6 @@
 [submodule "bundle/l9"]
 	path = bundle/l9
 	url = git://github.com/clones/vim-l9.git
-[submodule "bundle/ctrlp.vim"]
-	path = bundle/ctrlp.vim
-	url = git://github.com/kien/ctrlp.vim.git
 [submodule "bundle/vim-matchit"]
 	path = bundle/vim-matchit
 	url = git://github.com/tsaleh/vim-matchit.git
