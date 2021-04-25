@@ -8,6 +8,8 @@ call pathogen#infect()
 " System setup
 " ------------------------------------------------------------------------
 
+set encoding=UTF-8 " useful for vim-devicons plugin
+
 set nocompatible
 filetype plugin on
 set nobackup      " turn backup off - most files are in git anyway

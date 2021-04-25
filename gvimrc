@@ -1,8 +1,11 @@
 " default color scheme
 colorscheme molokai
-set guifont=Monaco:h10
+set macligatures
+" Nerd font-patched Monaco: https://github.com/Karmenzind/monaco-nerd-fonts
+"set guifont=Monaco\ Nerd\ Font\ Complete\ Mono:h10
+set guifont=Hack\ Regular\ Nerd\ Font\ Complete\ Mono:h11
+set antialias
 set transparency=5
-set noantialias
 highlight Cursor guifg=white guibg=#BAAF07
 highlight iCursor guifg=white guibg=#A2C257
 
