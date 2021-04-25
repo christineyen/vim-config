@@ -15,45 +15,50 @@
 # You should have received a copy of the GNU General Public License
 # along with YouCompleteMe.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-# Not installing aliases from python-future; it's unreliable and slow.
-from builtins import *  # noqa
+import os
+import json
 
-from future.utils import iteritems
-from ycm import vimsupport
-from ycmd import user_options_store
+from ycm import vimsupport, paths
 from ycmd import identifier_utils
 
 YCM_VAR_PREFIX = 'ycm_'
 
 
-def BuildServerConf():
+def GetUserOptions( default_options = {} ):
   """Builds a dictionary mapping YCM Vim user options to values. Option names
   don't have the 'ycm_' prefix."""
+
+  user_options = {}
+
+  # First load the default settings from ycmd. We do this to ensure that any
+  # client-side code that assumes all options are loaded (such as the
+  # omnicompleter) don't have to constantly check for values being present, and
+  # so that we don't jave to dulicate the list of server settings in
+  # youcomplete.vim
+  defaults_file =  os.path.join( paths.DIR_OF_YCMD,
+                                 'ycmd',
+                                 'default_settings.json' )
+  if os.path.exists( defaults_file ):
+    with open( defaults_file ) as defaults_file_handle:
+      user_options = json.load( defaults_file_handle )
+
+  # Override the server defaults with any client-generated defaults
+  user_options.update( default_options )
+
+  # Finally, override with any user-specified values in the g: dict
+
   # We only evaluate the keys of the vim globals and not the whole dictionary
   # to avoid unicode issues.
   # See https://github.com/Valloric/YouCompleteMe/pull/2151 for details.
   keys = vimsupport.GetVimGlobalsKeys()
-  server_conf = {}
   for key in keys:
     if not key.startswith( YCM_VAR_PREFIX ):
       continue
     new_key = key[ len( YCM_VAR_PREFIX ): ]
     new_value = vimsupport.VimExpressionToPythonType( 'g:' + key )
-    server_conf[ new_key ] = new_value
+    user_options[ new_key ] = new_value
 
-  return server_conf
-
-
-def LoadJsonDefaultsIntoVim():
-  defaults = user_options_store.DefaultOptions()
-  for key, value in iteritems( defaults ):
-    new_key = 'g:ycm_' + key
-    if not vimsupport.VariableExists( new_key ):
-      vimsupport.SetVariableValue( new_key, value )
+  return user_options
 
 
 def CurrentIdentifierFinished():
@@ -111,22 +116,16 @@ def AdjustCandidateInsertionText( candidates ):
 
   new_candidates = []
   for candidate in candidates:
-    if isinstance( candidate, dict ):
-      new_candidate = candidate.copy()
+    new_candidate = candidate.copy()
 
-      if 'abbr' not in new_candidate:
-        new_candidate[ 'abbr' ] = new_candidate[ 'word' ]
+    if not new_candidate.get( 'abbr' ):
+      new_candidate[ 'abbr' ] = new_candidate[ 'word' ]
 
-      new_candidate[ 'word' ] = NewCandidateInsertionText(
-        new_candidate[ 'word' ],
-        text_after_cursor )
+    new_candidate[ 'word' ] = NewCandidateInsertionText(
+      new_candidate[ 'word' ],
+      text_after_cursor )
 
-      new_candidates.append( new_candidate )
-
-    elif isinstance( candidate, str ) or isinstance( candidate, bytes ):
-      new_candidates.append(
-        { 'abbr': candidate,
-          'word': NewCandidateInsertionText( candidate, text_after_cursor ) } )
+    new_candidates.append( new_candidate )
   return new_candidates
 
 

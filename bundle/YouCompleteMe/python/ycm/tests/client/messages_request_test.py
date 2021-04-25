@@ -15,19 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with YouCompleteMe.  If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-# Not installing aliases from python-future; it's unreliable and slow.
-from builtins import *  # noqa
-
 from ycm.tests.test_utils import MockVimModule
 MockVimModule()
 
 from hamcrest import assert_that, equal_to
-from mock import patch, call
+from unittest.mock import patch, call
 
 from ycm.client.messages_request import _HandlePollResponse
 from ycm.tests.test_utils import ExtendedMock
@@ -98,10 +90,10 @@ def HandlePollResponse_MultipleDiagnostics_test():
   assert_that( _HandlePollResponse( messages, diagnostics_handler ),
                equal_to( True ) )
   diagnostics_handler.UpdateWithNewDiagnosticsForFile.assert_has_exact_calls( [
-    call ( 'foo', [ 'PLACEHOLDER1' ] ),
-    call ( 'bar', [ 'PLACEHOLDER2' ] ),
-    call ( 'baz', [ 'PLACEHOLDER3' ] ),
-    call ( 'foo', [ 'PLACEHOLDER4' ] )
+    call( 'foo', [ 'PLACEHOLDER1' ] ),
+    call( 'bar', [ 'PLACEHOLDER2' ] ),
+    call( 'baz', [ 'PLACEHOLDER3' ] ),
+    call( 'foo', [ 'PLACEHOLDER4' ] )
   ] )
 
 
@@ -122,10 +114,10 @@ def HandlePollResponse_MultipleMessagesAndDiagnostics_test( post_vim_message ):
   assert_that( _HandlePollResponse( messages, diagnostics_handler ),
                equal_to( True ) )
   diagnostics_handler.UpdateWithNewDiagnosticsForFile.assert_has_exact_calls( [
-    call ( 'foo', [ 'PLACEHOLDER1' ] ),
-    call ( 'bar', [ 'PLACEHOLDER2' ] ),
-    call ( 'baz', [ 'PLACEHOLDER3' ] ),
-    call ( 'foo', [ 'PLACEHOLDER4' ] )
+    call( 'foo', [ 'PLACEHOLDER1' ] ),
+    call( 'bar', [ 'PLACEHOLDER2' ] ),
+    call( 'baz', [ 'PLACEHOLDER3' ] ),
+    call( 'foo', [ 'PLACEHOLDER4' ] )
   ] )
 
   post_vim_message.assert_has_exact_calls( [

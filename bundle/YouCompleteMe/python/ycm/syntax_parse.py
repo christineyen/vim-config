@@ -15,14 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with YouCompleteMe.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-# Not installing aliases from python-future; it's unreliable and slow.
-from builtins import *  # noqa
-
-from future.utils import itervalues
 import re
 from ycm import vimsupport
 
@@ -42,7 +34,7 @@ SYNTAX_ARGUMENT_REGEX = re.compile(
   r"^\w+=.*$" )
 
 SYNTAX_REGION_ARGUMENT_REGEX = re.compile(
-  r"^(?:matchgroup|start)=.*$")
+  r"^(?:matchgroup|start)=.*$" )
 
 # See ":h syn-nextgroup".
 SYNTAX_NEXTGROUP_ARGUMENTS = {
@@ -61,7 +53,7 @@ ROOT_GROUPS = {
 }
 
 
-class SyntaxGroup( object ):
+class SyntaxGroup:
   def __init__( self, name, lines = None ):
     self.name     = name
     self.lines    = lines if lines else []
@@ -106,7 +98,7 @@ def _SyntaxGroupsFromOutput( syntax_output ):
         group_name_to_group[ current_group.name ] = current_group
 
       current_group = SyntaxGroup( match.group( 'group_name' ),
-                                   [ match.group( 'content').strip() ] )
+                                   [ match.group( 'content' ).strip() ] )
     else:
       if looking_for_group:
         continue
@@ -169,7 +161,7 @@ def _ConnectGroupChildren( group_name_to_group ):
         parent_names.append( line[ len( links_to ): ] )
     return parent_names
 
-  for group in itervalues( group_name_to_group ):
+  for group in group_name_to_group.values():
     parent_names = GetParentNames( group )
 
     for parent_name in parent_names:

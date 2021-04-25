@@ -15,20 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with YouCompleteMe.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-# Not installing aliases from python-future; it's unreliable and slow.
-from builtins import *  # noqa
-
-from future.utils import itervalues, iteritems
 from collections import defaultdict
 from ycm import vimsupport
 from ycm.diagnostic_filter import DiagnosticFilter, CompileLevel
 
 
-class DiagnosticInterface( object ):
+class DiagnosticInterface:
   def __init__( self, bufnr, user_options ):
     self._bufnr = bufnr
     self._user_options = user_options
@@ -59,7 +51,7 @@ class DiagnosticInterface( object ):
   def PopulateLocationList( self ):
     # Do nothing if loc list is already populated by diag_interface
     if not self._user_options[ 'always_populate_location_list' ]:
-      self._UpdateLocationList()
+      self._UpdateLocationLists()
     return bool( self._diagnostics )
 
 
@@ -77,7 +69,7 @@ class DiagnosticInterface( object ):
     self.UpdateMatches()
 
     if self._user_options[ 'always_populate_location_list' ]:
-      self._UpdateLocationList()
+      self._UpdateLocationLists()
 
 
   def _ApplyDiagnosticFilter( self, diags ):
@@ -114,13 +106,13 @@ class DiagnosticInterface( object ):
 
   def _DiagnosticsCount( self, predicate ):
     count = 0
-    for diags in itervalues( self._line_to_diags ):
+    for diags in self._line_to_diags.values():
       count += sum( 1 for d in diags if predicate( d ) )
     return count
 
 
-  def _UpdateLocationList( self ):
-    vimsupport.SetLocationListForBuffer(
+  def _UpdateLocationLists( self ):
+    vimsupport.SetLocationListsForBuffer(
       self._bufnr,
       vimsupport.ConvertDiagnosticsToQfList( self._diagnostics ) )
 
@@ -129,37 +121,20 @@ class DiagnosticInterface( object ):
     if not self._user_options[ 'enable_diagnostic_highlighting' ]:
       return
 
+    # Vim doesn't provide a way to update the matches for a different window
+    # than the current one (which is a view of the current buffer).
+    if vimsupport.GetCurrentBufferNumber() != self._bufnr:
+      return
+
     matches_to_remove = vimsupport.GetDiagnosticMatchesInCurrentWindow()
 
-    for diags in itervalues( self._line_to_diags ):
+    for diags in self._line_to_diags.values():
       # Insert squiggles in reverse order so that errors overlap warnings.
       for diag in reversed( diags ):
-        patterns = []
-
         group = ( 'YcmErrorSection' if _DiagnosticIsError( diag ) else
                   'YcmWarningSection' )
 
-        location_extent = diag[ 'location_extent' ]
-        if location_extent[ 'start' ][ 'line_num' ] <= 0:
-          location = diag[ 'location' ]
-          patterns.append( vimsupport.GetDiagnosticMatchPattern(
-            location[ 'line_num' ],
-            location[ 'column_num' ] ) )
-        else:
-          patterns.append( vimsupport.GetDiagnosticMatchPattern(
-            location_extent[ 'start' ][ 'line_num' ],
-            location_extent[ 'start' ][ 'column_num' ],
-            location_extent[ 'end' ][ 'line_num' ],
-            location_extent[ 'end' ][ 'column_num' ] ) )
-
-        for diag_range in diag[ 'ranges' ]:
-          patterns.append( vimsupport.GetDiagnosticMatchPattern(
-            diag_range[ 'start' ][ 'line_num' ],
-            diag_range[ 'start' ][ 'column_num' ],
-            diag_range[ 'end' ][ 'line_num' ],
-            diag_range[ 'end' ][ 'column_num' ] ) )
-
-        for pattern in patterns:
+        for pattern in _ConvertDiagnosticToMatchPatterns( diag ):
           # The id doesn't matter for matches that we may add.
           match = vimsupport.DiagnosticMatch( 0, group, pattern )
           try:
@@ -174,7 +149,7 @@ class DiagnosticInterface( object ):
   def _UpdateSigns( self ):
     signs_to_unplace = vimsupport.GetSignsInBuffer( self._bufnr )
 
-    for line, diags in iteritems( self._line_to_diags ):
+    for line, diags in self._line_to_diags.items():
       if not diags:
         continue
 
@@ -202,7 +177,7 @@ class DiagnosticInterface( object ):
         line_number = location[ 'line_num' ]
         self._line_to_diags[ line_number ].append( diag )
 
-    for diags in itervalues( self._line_to_diags ):
+    for diags in self._line_to_diags.values():
       # We also want errors to be listed before warnings so that errors aren't
       # hidden by the warnings; Vim won't place a sign over an existing one.
       diags.sort( key = lambda diag: ( diag[ 'kind' ],
@@ -221,3 +196,29 @@ def _NormalizeDiagnostic( diag ):
   location[ 'column_num' ] = ClampToOne( location[ 'column_num' ] )
   location[ 'line_num' ] = ClampToOne( location[ 'line_num' ] )
   return diag
+
+
+def _ConvertDiagnosticToMatchPatterns( diagnostic ):
+  patterns = []
+
+  location_extent = diagnostic[ 'location_extent' ]
+  if location_extent[ 'start' ][ 'line_num' ] <= 0:
+    location = diagnostic[ 'location' ]
+    patterns.append( vimsupport.GetDiagnosticMatchPattern(
+      location[ 'line_num' ],
+      location[ 'column_num' ] ) )
+  else:
+    patterns.append( vimsupport.GetDiagnosticMatchPattern(
+      location_extent[ 'start' ][ 'line_num' ],
+      location_extent[ 'start' ][ 'column_num' ],
+      location_extent[ 'end' ][ 'line_num' ],
+      location_extent[ 'end' ][ 'column_num' ] ) )
+
+  for diagnostic_range in diagnostic[ 'ranges' ]:
+    patterns.append( vimsupport.GetDiagnosticMatchPattern(
+      diagnostic_range[ 'start' ][ 'line_num' ],
+      diagnostic_range[ 'start' ][ 'column_num' ],
+      diagnostic_range[ 'end' ][ 'line_num' ],
+      diagnostic_range[ 'end' ][ 'column_num' ] ) )
+
+  return patterns
